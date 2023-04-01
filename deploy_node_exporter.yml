@@ -1,7 +1,7 @@
 - hosts: monitoring:spam:proxmox:proxmox-ceph:lb:utils:directadmin
   gather_facts: false
   vars:
-    node_exporter_version: 1.3.1
+    node_exporter_version: 1.5.0
   tasks:
     - name: test connection
       ping:
