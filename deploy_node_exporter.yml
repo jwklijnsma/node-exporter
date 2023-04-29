@@ -1,4 +1,4 @@
-- hosts: monitoring:spam:proxmox:proxmox-ceph:lb:utils:directadmin
+- hosts: all
   gather_facts: false
   vars:
     node_exporter_version: 1.5.0
