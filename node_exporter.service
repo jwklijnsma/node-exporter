@@ -3,7 +3,9 @@ Description=Service which runs Node Exporter for Prometheus scraping
 
 [Service]
 User=prometheus
-ExecStart=/usr/bin/node_exporter  --web.config=/etc/node-exporter/config.yml
+ExecStart=/usr/bin/node_exporter \
+
+--web.config=/etc/node-exporter/config.yml
 
 [Install]
 WantedBy=multi-user.target
