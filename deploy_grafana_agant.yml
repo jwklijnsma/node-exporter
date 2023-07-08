@@ -1,0 +1,79 @@
+---
+- name: Deploy Grafana Agent and configure Prometheus scraping
+  hosts: your_hosts
+  become: yes
+  tasks:
+    - name: Install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - software-properties-common
+        state: present
+
+    - name: Add Grafana repository key
+      apt_key:
+        url: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Add Grafana repository
+      apt_repository:
+        repo: deb https://packages.grafana.com/oss/deb stable main
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Grafana Agent
+      apt:
+        name: grafana-agent
+        state: present
+
+    - name: Configure local Prometheus scraping
+      copy:
+        dest: /etc/grafana-agent.yaml
+        content: |
+          server:
+            http_listen_port: 12345
+          prometheus:
+            global:
+              scrape_interval: 15s
+            configs:
+              - name: local-node
+                scrape_configs:
+                  - job_name: 'node_exporter'
+                    scrape_interval: 5s
+                    scheme: https
+                    basic_auth:
+                      username: prometheus
+                      password: Sq#LsuDjV#3?%GtQ7*7Q
+                    tls_config:
+                      ca_file: node_exporter.crt
+                      insecure_skip_verify: true
+                    static_configs:
+                      - targets: ['localhost:9100']
+
+    - name: Enable and start Grafana Agent service
+      service:
+        name: grafana-agent
+        state: started
+        enabled: yes
+
+    - name: Configure remote write for Prometheus
+      lineinfile:
+        path: /etc/grafana-agent.yaml
+        line: "remote_write:"
+        insertafter: "^prometheus:$"
+        state: present
+
+    - name: Add remote write config to Grafana Agent
+      lineinfile:
+        path: /etc/grafana-agent.yaml
+        line: "  - url: 'https://prometheus.dc1.ek-hosting.net/api/v1/write'"
+        insertafter: "^remote_write:$"
+        state: present
+
+    - name: Restart Grafana Agent service
+      service:
+        name: grafana-agent
+        state: restarted
