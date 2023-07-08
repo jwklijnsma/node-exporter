@@ -48,7 +48,7 @@
                       username: prometheus
                       password: Sq#LsuDjV#3?%GtQ7*7Q
                     tls_config:
-                      ca_file: node_exporter.crt
+                      ca_file: /etc/node-exporter/node_exporter.crt
                       insecure_skip_verify: true
                     static_configs:
                       - targets: ['localhost:9100']
