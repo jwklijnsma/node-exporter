@@ -28,49 +28,21 @@
         name: grafana-agent
         state: present
 
-    - name: Configure local Prometheus scraping
-      copy:
+    - name: create opt directory for prometheus
+      file:
+        path: /opt/prometheus
+        state: directory
+
+    - name: copy node_exporter.crt
+      template:
+        src: grafana-agent.yaml
         dest: /etc/grafana-agent.yaml
-        content: |
-          server:
-            http_listen_port: 12345
-          prometheus:
-            global:
-              scrape_interval: 15s
-            configs:
-              - name: local-node
-                scrape_configs:
-                  - job_name: 'node_exporter'
-                    scrape_interval: 5s
-                    scheme: https
-                    basic_auth:
-                      username: prometheus
-                      password: Sq#LsuDjV#3?%GtQ7*7Q
-                    tls_config:
-                      ca_file: /etc/node-exporter/node_exporter.crt
-                      insecure_skip_verify: true
-                    static_configs:
-                      - targets: ['localhost:9100']
 
     - name: Enable and start Grafana Agent service
       service:
         name: grafana-agent
         state: started
         enabled: yes
-
-    - name: Configure remote write for Prometheus
-      lineinfile:
-        path: /etc/grafana-agent.yaml
-        line: "remote_write:"
-        insertafter: "^prometheus:$"
-        state: present
-
-    - name: Add remote write config to Grafana Agent
-      lineinfile:
-        path: /etc/grafana-agent.yaml
-        line: "  - url: 'https://prometheus.dc1.ek-hosting.net/api/v1/write'"
-        insertafter: "^remote_write:$"
-        state: present
 
     - name: Restart Grafana Agent service
       service:

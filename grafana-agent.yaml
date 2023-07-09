@@ -1,0 +1,22 @@
+server:
+  log_level: info
+
+metrics:
+  global:
+    scrape_interval: 1m
+  configs:
+    - name: local-node
+      scrape_configs:
+        - job_name: 'node_exporter'
+          scrape_interval: 5s
+          scheme: https
+          basic_auth:
+            username: prometheus
+            password: Sq#LsuDjV#3?%GtQ7*7Q
+          tls_config:
+            ca_file: /etc/node-exporter/node_exporter.crt
+            insecure_skip_verify: true
+          static_configs:
+            - targets: ['localhost:9100']
+      remote_write:
+        - url: https://prometheus.dc1.ek-hosting.net/api/prom/push
