@@ -28,10 +28,10 @@
         state: present
 
     - name: copy grafana-agent.yaml
-      copy:
-        src: grafana-agent.yaml
+      template:
+        src: grafana-agent.yaml.j2
         dest: /etc/grafana-agent.yaml
-        force: yes
+
 
     - name: Enable and start Grafana Agent service
       service:
