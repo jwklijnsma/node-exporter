@@ -19,4 +19,4 @@ metrics:
           static_configs:
             - targets: ['localhost:9100']
       remote_write:
-        - url: https://prometheus.dc1.ek-hosting.net/api/prom/push
+        - url: https://prometheus.dc1.ek-hosting.net/api/v1/write
