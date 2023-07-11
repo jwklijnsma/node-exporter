@@ -28,10 +28,10 @@
         state: present
 
     - name: copy grafana-agent.yaml
-      template:
+      copy:
         src: grafana-agent.yaml
         dest: /etc/grafana-agent.yaml
-      force: yes
+        force: yes
 
     - name: Enable and start Grafana Agent service
       service:
@@ -88,10 +88,10 @@
         dest: /opt/prometheus
 
     - name: copy config promotheus
-      template:
+      copy:
         src: config.yml
         dest: /etc/node-exporter
-      force: yes  
+        force: yes  
 
     - name: copy node_exporter.key
       template:
