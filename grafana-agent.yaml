@@ -5,7 +5,7 @@ metrics:
   global:
     scrape_interval: 30s
     external_labels:
-      instance: {{ansible_hostname}}
+      instance: {{ ansible_hostname }}
   configs:
     - name: default
       scrape_configs:
