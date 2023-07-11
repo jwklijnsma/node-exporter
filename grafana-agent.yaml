@@ -6,12 +6,14 @@ metrics:
   global:
     scrape_interval: 30s
     external_labels:
-      environment: {{ansible_hostname}}
+      instance: {{ansible_hostname}}
   configs:
-    - name: {{ansible_hostname}}-default
+    - name: default
       scrape_configs:
-        - job_name: '{{ansible_hostname}}-node_exporter'
-          scrape_interval: 5s
+        - job_name: agent
+          static_configs:
+            - targets: ['127.0.0.1:12345']
+        - job_name: 'node_exporter'
           scheme: https
           basic_auth:
             username: prometheus
@@ -20,6 +22,6 @@ metrics:
             ca_file: /etc/node-exporter/node_exporter.crt
             insecure_skip_verify: true
           static_configs:
-            - targets: ['localhost:9100']
+            - targets: ['127.0.0.1:9100']
       remote_write:
         - url: https://prometheus.dc1.ek-hosting.net/api/v1/write
