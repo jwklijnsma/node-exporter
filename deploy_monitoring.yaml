@@ -27,10 +27,11 @@
         name: grafana-agent
         state: present
 
-    - name: copy node_exporter.crt
+    - name: copy grafana-agent.yaml
       template:
         src: grafana-agent.yaml
         dest: /etc/grafana-agent.yaml
+      force: yes
 
     - name: Enable and start Grafana Agent service
       service:
@@ -90,6 +91,7 @@
       template:
         src: config.yml
         dest: /etc/node-exporter
+      force: yes  
 
     - name: copy node_exporter.key
       template:
