@@ -5,7 +5,7 @@ metrics:
   global:
     scrape_interval: 30s
     external_labels:
-      instance: "{{ inventory_hostname }}"
+      instance: {{ inventory_hostname }}
   configs:
     - name: default
       scrape_configs:
@@ -18,6 +18,6 @@ metrics:
             ca_file: /etc/node-exporter/node_exporter.crt
             insecure_skip_verify: true
           static_configs:
-            - targets: ['127.0.0.1:9100']
+            - targets: ['{{ inventory_hostname }}:9100']
       remote_write:
         - url: https://prometheus.dc1.ek-hosting.net/api/v1/write
