@@ -27,11 +27,6 @@
         name: grafana-agent
         state: present
 
-    - name: create opt directory for prometheus
-      file:
-        path: /opt/prometheus
-        state: directory
-
     - name: copy node_exporter.crt
       template:
         src: grafana-agent.yaml
