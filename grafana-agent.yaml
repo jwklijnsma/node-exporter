@@ -5,7 +5,7 @@ metrics:
   global:
     scrape_interval: 30s
     external_labels:
-      instance: {{ ansible_default_ipv4.address }}
+      instance: {{ inventory_hostname }}
   configs:
     - name: default
       scrape_configs:
