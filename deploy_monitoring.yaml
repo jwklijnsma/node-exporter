@@ -88,8 +88,8 @@
         dest: /opt/prometheus
 
     - name: copy config promotheus
-      copy:
-        src: config.yml
+      template:
+        src: config.yml.j2
         dest: /etc/node-exporter
         force: yes  
 
